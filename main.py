@@ -13,7 +13,7 @@ response = httpx.get(URL)
 data = response.json()
 meetings = data["meetings"]
 
-df = pl.DataFrame(meetings).filter(pl.col("cdg_status") != 200)
+df = pl.DataFrame(meetings).filter(pl.col("cdg_json_status") != 200)
 
 st.subheader("House Events with Error Codes in CDG")
 
