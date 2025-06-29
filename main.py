@@ -16,7 +16,7 @@ meetings = data["meetings"]
 df = pl.DataFrame(meetings)
 
 if len(df) > 0:
-    df = df.filter(pl.col("cdg_json_status") != 200 | pl.col("cdg_xml_status") != 200)
+    df = df.filter((pl.col("cdg_json_status") != 200 | pl.col("cdg_xml_status") != 200))
 
 st.subheader("House Events with Error Codes in CDG")
 
