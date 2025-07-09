@@ -9,7 +9,7 @@ st.set_page_config(TITLE, layout="wide")
 
 st.title(TITLE)
 
-response = httpx.get(URL)
+response = httpx.get(URL, timeout=None)
 data = response.json()
 meetings = data["meetings"]
 
