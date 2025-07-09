@@ -29,14 +29,28 @@ st.dataframe(
 )
 
 if len(df) > 0:
-    df = df.filter(
+    err_df = df.filter(
         ((pl.col("cdg_json_status") != 200) | (pl.col("cdg_xml_status") != 200))
     )
+    stat_df = df.filter(pl.col("cdg_status") != pl.col("repo_status"))
 
 st.subheader("House Events with Error Codes in CDG")
 
 st.dataframe(
-    df,
+    err_df,
+    use_container_width=True,
+    column_config={
+        "cdg_api_url_json": st.column_config.LinkColumn(),
+        "cdg_api_url_xml": st.column_config.LinkColumn(),
+        "cdg_url": st.column_config.LinkColumn(),
+        "house_repo_url": st.column_config.LinkColumn(),
+    },
+)
+
+st.subheader("House Events with Mismatched Statuses")
+
+st.dataframe(
+    stat_df,
     use_container_width=True,
     column_config={
         "cdg_api_url_json": st.column_config.LinkColumn(),
