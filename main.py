@@ -28,11 +28,16 @@ st.dataframe(
     },
 )
 
+st.subheader(f"Total: {len(df)}")
+
 if len(df) > 0:
     err_df = df.filter(
         ((pl.col("cdg_json_status") != 200) | (pl.col("cdg_xml_status") != 200))
     )
-    stat_df = df.filter(pl.col("cdg_status") != pl.col("repo_status"))
+    stat_df = df.filter(
+        (pl.col("cdg_status") != pl.col("repo_status"))
+        & ((pl.col("cdg_json_status") == 200) | (pl.col("cdg_xml_status") == 200))
+    )
 
     st.subheader("House Events with Error Codes in CDG")
 
@@ -47,7 +52,9 @@ if len(df) > 0:
         },
     )
 
-    st.subheader("House Events with Mismatched Statuses")
+    st.subheader(f"Total: {len(err_df)}")
+
+    st.subheader("House Events in CDG with Mismatched Statuses")
 
     st.dataframe(
         stat_df,
@@ -59,3 +66,5 @@ if len(df) > 0:
             "house_repo_url": st.column_config.LinkColumn(),
         },
     )
+
+    st.subheader(f"Total: {len(stat_df)}")
